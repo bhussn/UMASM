@@ -2,9 +2,10 @@
     .zero r0
     .temps r6,r7
 
+# r1 hold incoming digit
 # r2 hold stack pointer
-# r5 hold incoming digit
-# r3 hold value stack
+# r5 hold value stack
+
 .section rodata
     jumptable:
         .space 256
@@ -13,3 +14,28 @@
     value_stack:
         .space 10000
         end_value_stack:
+
+.section init
+    r5 := end_value_stack
+
+.section init
+    .temp r6, r7
+    .zero r0
+    push r3 on stack r2
+    push r4 on stack r2
+
+# initialize jumptable to input_error
+jumptable:
+
+    jump_loop:
+        r3 := 0
+        m[0][jumptable + r3] = input_error
+        r3 := r3 + 1
+    jump_main:
+        if (r3 != 256) goto jump_loop
+
+.section init
+    m[r0] [jumptable + '*'] := mul
+.section text
+    mul:
+    if 
