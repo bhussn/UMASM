@@ -1,0 +1,15 @@
+.section init
+    .zero r0
+    .temps r6,r7
+
+# r2 hold stack pointer
+# r5 hold incoming digit
+# r3 hold value stack
+.section rodata
+    jumptable:
+        .space 256
+
+.section data
+    value_stack:
+        .space 10000
+        end_value_stack:
