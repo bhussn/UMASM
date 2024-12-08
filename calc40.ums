@@ -25,17 +25,34 @@
     push r4 on stack r2
 
 # initialize jumptable to input_error
-jumptable:
+initialize_jumptable:
 
     jump_loop:
         r3 := 0
         m[0][jumptable + r3] = input_error
         r3 := r3 + 1
+
     jump_main:
         if (r3 != 256) goto jump_loop
 
+############################################# need to be finished 
+.section text
+    digit:
+        #The code associated with this label stores the digit on the value stack and goes to the entering state
+
+.section init
+    #do the digit loop thing to set the digits to digit label
+
+.section text
+    waiting:
+        #write the waiting code
+.section init
+    m[r0][jumptable + ' '] := waiting
+############################################# need to be finished 
+
+
+############# adding the operators #############
 .section init
     m[r0] [jumptable + '*'] := mul
 .section text
     mul:
-    if 
