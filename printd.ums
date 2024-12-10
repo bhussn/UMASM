@@ -1,0 +1,85 @@
+#   callmain.ums
+#
+#   Assignment:      RPN
+#   Authors:         Baydan Hussen (bhusse01) and Neelofar Tamboli (ntambo01)
+#   Date:            12/8/2024
+#
+#   Purpose: Commands for the print function
+#
+#   Calling Conventions: 
+#                    - r1 = 0 
+#                    - r6 and r7 are temps/volatile
+#                    - r2 holds the stack pointer
+#                    - r1 holds the return address and return result
+#                    - r3 holds the top of the stack
+#
+
+.section init
+    .temps r6, r7
+    .zero r0
+
+# printd
+#   purpose:    recursively prints the value in r1 based on what digit it is,
+#               its sign, and length
+#   args:       a signed int, on the stack representing the number to be
+#               printed
+#   returns:    none, prints to stdout
+#   registers:  r1 as parameter num, r5 briefly used as temp
+.section text
+printd:
+    # output 's'
+    #save the return address and get the first parameter
+    push r1 on stack r2
+    r1 := m[r0][r2 + 1] 
+    push r5 on stack r2
+
+    #print 0, if the number is 0
+    if (r1 != 0) goto print_neg 
+        output '0'
+        goto printd_return
+
+    #print the negative sign if the number is negative
+    print_neg:
+    .temps r5, r6, r7
+    if (r1 >=s 0) goto print_pos
+        output '-'
+        r1 := r1 * -1
+    
+    #positive number case
+    print_pos:
+    .temps r6, r7
+    push r1 on stack r2
+    goto printd_recursive linking r1
+
+    #restore r5 and r1, pop off argument, return
+    printd_return:
+    pop r5 off stack r2 
+    pop r1 off stack r2 
+    pop stack r2        
+
+    goto r1
+
+printd_recursive:
+    push r1 on stack r2
+    r1 := m[r0][r2 + 1]
+    if (r1 == 0) goto printd_recursive_return
+
+    #push the digit to be printed onto the stack
+    .temps r6, r7 
+    r5 := r1 mod 10
+    push r5 on stack r2
+
+    #get the next digit
+    .temps r5, r6, r7
+    r1 := r1 / 10
+    push r1 on stack r2 
+    goto printd_recursive linking r1
+
+    pop r1 off stack r2
+    output r1 + '0'
+
+    printd_recursive_return:
+        #restore registers and go to the functioned that called it
+        pop r1 off stack r2 
+        pop stack r2        
+        goto r1

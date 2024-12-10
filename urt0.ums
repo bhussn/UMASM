@@ -1,10 +1,11 @@
-.section init
-    .temps r6, r7
-    .zero r0
+#   urt0.ums
+#
+#   Assignment:      RPN Calculator
+#   Authors:         Baydan Hussen (bhusse01) and Neelofar Tamboli (ntambo01)
+#   Date:            12/8/2024
+#
+#   Purpose: Creates the value stack for the RPN calculator
+
 .section stk
-    .space 100000
+    .space 1000000
     endstack:
-.section init
-    start:
-        r0 := 0
-        r2 := endstack

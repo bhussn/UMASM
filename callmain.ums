@@ -1,5 +1,31 @@
+#   callmain.ums
+#
+#   Assignment:      RPN
+#   Authors:         Baydan Hussen (bhusse01) and Neelofar Tamboli (ntambo01)
+#   Date:            12/8/2024
+#
+#   Purpose: Initalizes registers and calls main
+#
+#   Calling Conventions: 
+#                    - r1 = 0 
+#                    - r6 and r7 are temps 
+#                    - r2 holds the stack pointer
+#                    - r1 holds the return address and return result
+#
+
+.temps r6, r7
+.zero r0
+
 .section init
-    .temp r6, r7
-    .zero r0
+# start
+#   purpose: initializes r0 as 0, r2 as the stack-pointer, and calls main
+#   args:       none
+#   returns:    none
+#   expects:    to be called after all other initialization
+#   registers:  r0 = 0, r2 = stack pointer, r1 = main address
+start:
+    r0 := 0
+    r2 := endstack
     goto main linking r1
+
     halt
